@@ -3,12 +3,12 @@
 This is forked from [Onion Monero Blockchain Explorer](https://github.com/moneroexamples/onion-monero-blockchain-explorer)
 
 # Compiling
-- To compile the block explorer you need to have first compiled the main repository found [here](https://github.com/electroneum/electroneum)
+- To compile the block explorer you need to have first compiled the main repository found [here](https://github.com/electroneumclassic/electroneum-classic)
+- apt-get install libcurl4-openssl-dev
 - Once compiled, enter the block explorer directory and run the following commands:
+  - apt-get install libcurl4-openssl-dev
   - `mkdir -p build && cd build` To create the build directory and enter it  
-  - `cmake .. && make -j$(nproc)` To compile, by default the ELECTRONEUM_DIR is set to ~/electroneum
-  - If you have it in a different directory then please run:
-    - `cmake -D ELECTRONEUM_DIR="/path/to/electroneum/src" .. && make -j$(nproc)`
+  - `cmake -D ELECTRONEUM_DIR="/path/to/electroneum-classic" .. && make -j$(nproc)` To compile, by default the ELECTRONEUM_DIR is set to ~/electroneum
 
 # Usage
 `./etnblocks` will start the blockexplorer with default settings. Additional flags are shown below
@@ -55,6 +55,6 @@ This is forked from [Onion Monero Blockchain Explorer](https://github.com/monero
                                         functionality
   --ssl-key-file arg                    path to key file for ssl (https)
                                         functionality
-  -d [ --deamon-url ] arg (=http:://127.0.0.1:26968)
+  -d [ --deamon-url ] arg (=http:://127.0.0.1:26978)
                                         Electroneum deamon url
 ```
