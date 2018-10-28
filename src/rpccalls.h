@@ -3,12 +3,13 @@
 //
 
 
-#ifndef CROWETN_RPCCALLS_H
-#define CROWETN_RPCCALLS_H
+#ifndef CROWXMR_RPCCALLS_H
+#define CROWXMR_RPCCALLS_H
 
-#include "electroneum_headers.h"
+#include "monero_headers.h"
 
 #include <mutex>
+#include <utility>
 
 
 
@@ -23,7 +24,7 @@ struct has_destructor
 {
     // has destructor
     template <typename A>
-    static std::true_type test(decltype(declval<A>().~A()) *)
+    static std::true_type test(decltype(std::declval<A>().~A()) *)
     {
         return std::true_type();
     }
@@ -46,8 +47,8 @@ struct has_destructor
 
 namespace cryptonote
 {
-// declare struct in electroneum's cryptonote namespace.
-// electroneum should provide definition for this,
+// declare struct in monero's cryptonote namespace.
+// monero should provide definition for this,
 // but we need to have it declared as we are going to
 // check if its definition exist or not. depending on this
 // we decide what gets to be defined as
@@ -55,7 +56,7 @@ namespace cryptonote
 struct COMMAND_RPC_GET_ALT_BLOCKS_HASHES;
 }
 
-namespace electroneumeg
+namespace xmreg
 {
 
 using namespace cryptonote;
@@ -80,11 +81,11 @@ class rpccalls
 
 public:
 
-    rpccalls(string _deamon_url = "http:://127.0.0.1:26978",
+    rpccalls(string _deamon_url = "http:://127.0.0.1:18081",
              uint64_t _timeout = 200000);
 
     bool
-    connect_to_electroneum_deamon();
+    connect_to_monero_deamon();
 
     uint64_t
     get_current_height();
@@ -97,6 +98,9 @@ public:
 
     bool
     get_network_info(COMMAND_RPC_GET_INFO::response& info);
+
+    bool
+    get_hardfork_info( COMMAND_RPC_HARD_FORK_INFO::response& res);
 
     bool
     get_dynamic_per_kb_fee_estimate(
@@ -126,7 +130,7 @@ public:
         {
             std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-            if (!connect_to_electroneum_deamon())
+            if (!connect_to_monero_deamon())
             {
                 cerr << "get_alt_blocks: not connected to deamon" << endl;
                 return false;
@@ -152,14 +156,14 @@ public:
 
             if (!err.empty())
             {
-                cerr << "Error connecting to Electroneum deamon due to "
+                cerr << "Error connecting to Monero deamon due to "
                      << err << endl;
                 return false;
             }
         }
         else
         {
-            cerr << "Error connecting to Electroneum deamon at "
+            cerr << "Error connecting to Monero deamon at "
                  << deamon_url << endl;
             return false;
         }
@@ -189,4 +193,4 @@ public:
 
 
 
-#endif //CROWETN_RPCCALLS_H
+#endif //CROWXMR_RPCCALLS_H

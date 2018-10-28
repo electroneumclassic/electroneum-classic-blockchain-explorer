@@ -2,8 +2,8 @@
 // Created by mwo on 16/05/17.
 //
 
-#ifndef ETNBLOCKS_CURRENTBLOCKCHAINSTATUS_H
-#define ETNBLOCKS_CURRENTBLOCKCHAINSTATUS_H
+#ifndef XMRBLOCKS_CURRENTBLOCKCHAINSTATUS_H
+#define XMRBLOCKS_CURRENTBLOCKCHAINSTATUS_H
 
 #include "MicroCore.h"
 
@@ -15,7 +15,7 @@
 #include <mutex>
 #include <atomic>
 
-namespace electroneumeg
+namespace xmreg
 {
 
 using namespace std;
@@ -47,7 +47,7 @@ struct CurrentBlockchainStatus
 
     static bf::path blockchain_path;
 
-    static bool testnet;
+    static cryptonote::network_type nettype;
 
     static string output_file;
 
@@ -111,4 +111,4 @@ struct CurrentBlockchainStatus
 
 }
 
-#endif //ETNBLOCKS_CURRENTBLOCKCHAINSTATUS_H
+#endif //XMRBLOCKS_CURRENTBLOCKCHAINSTATUS_H

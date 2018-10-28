@@ -5,7 +5,7 @@
 #include "CmdLineOptions.h"
 
 
-namespace electroneumeg
+namespace xmreg
 {
     /**
      * Take the acc and *avv[] from the main() and check and parse
@@ -18,13 +18,15 @@ namespace electroneumeg
         p.add("txhash", -1);
 
         options_description desc(
-                "etnblocks, Electroneum Blockchain Explorer");
+                "xmrblocks, Onion Monero Blockchain Explorer");
 
         desc.add_options()
                 ("help,h", value<bool>()->default_value(false)->implicit_value(true),
                  "produce help message")
                 ("testnet,t", value<bool>()->default_value(false)->implicit_value(true),
                  "use testnet blockchain")
+                ("stagenet,s", value<bool>()->default_value(false)->implicit_value(true),
+                 "use stagenet blockchain")
                 ("enable-pusher", value<bool>()->default_value(false)->implicit_value(true),
                  "enable signed transaction pusher")
                 ("enable-mixin-details", value<bool>()->default_value(false)->implicit_value(true),
@@ -33,7 +35,7 @@ namespace electroneumeg
                  "enable key images file checker")
                 ("enable-output-key-checker", value<bool>()->default_value(false)->implicit_value(true),
                  "enable outputs key file checker")
-                ("enable-json-api", value<bool>()->default_value(true),
+                ("enable-json-api", value<bool>()->default_value(false)->implicit_value(true),
                  "enable JSON REST api")
                 ("enable-tx-cache", value<bool>()->default_value(false)->implicit_value(true),
                  "enable caching of transaction details")
@@ -41,16 +43,24 @@ namespace electroneumeg
                  "show times of getting data from cache vs no cache")
                 ("enable-block-cache", value<bool>()->default_value(false)->implicit_value(true),
                  "enable caching of block details")
+                ("enable-js", value<bool>()->default_value(false)->implicit_value(true),
+                 "enable checking outputs and proving txs using JavaScript on client side")
+                ("enable-as-hex", value<bool>()->default_value(false)->implicit_value(true),
+                 "enable links to provide hex represtations of a tx and a block")
                 ("enable-autorefresh-option", value<bool>()->default_value(false)->implicit_value(true),
                  "enable users to have the index page on autorefresh")
                 ("enable-emission-monitor", value<bool>()->default_value(false)->implicit_value(true),
-                 "enable Electroneum total emission monitoring thread")
+                 "enable Monero total emission monitoring thread")
                 ("port,p", value<string>()->default_value("8081"),
                  "default explorer port")
+                ("bindaddr,x", value<string>()->default_value("0.0.0.0"),
+                 "default bind address for the explorer")
                 ("testnet-url", value<string>()->default_value(""),
-                 "you can specify testnet url, if you run it on mainnet. link will show on front page to testnet explorer")
+                 "you can specify testnet url, if you run it on mainnet or stagenet. link will show on front page to testnet explorer")
+                ("stagenet-url", value<string>()->default_value(""),
+                 "you can specify stagenet url, if you run it on mainnet or testnet. link will show on front page to stagenet explorer")
                 ("mainnet-url", value<string>()->default_value(""),
-                 "you can specify mainnet url, if you run it on testnet. link will show on front page to mainnet explorer")
+                 "you can specify mainnet url, if you run it on testnet or stagenet. link will show on front page to mainnet explorer")
                 ("no-blocks-on-index", value<string>()->default_value("10"),
                  "number of last blocks to be shown on index page")
                 ("mempool-info-timeout", value<string>()->default_value("5000"),
@@ -58,13 +68,13 @@ namespace electroneumeg
                 ("mempool-refresh-time", value<string>()->default_value("5"),
                  "time, in seconds, for each refresh of mempool state")
                 ("bc-path,b", value<string>(),
-                 "path to lmdb folder of the blockchain, e.g., ~/.electroneum/lmdb")
+                 "path to lmdb folder of the blockchain, e.g., ~/.bitmonero/lmdb")
                 ("ssl-crt-file", value<string>(),
                  "path to crt file for ssl (https) functionality")
                 ("ssl-key-file", value<string>(),
                  "path to key file for ssl (https) functionality")
-                ("deamon-url,d", value<string>()->default_value("http:://127.0.0.1:26978"),
-                 "Electroneum deamon url");
+                ("deamon-url,d", value<string>()->default_value("http:://127.0.0.1:18081"),
+                 "Monero deamon url");
 
 
         store(command_line_parser(acc, avv)

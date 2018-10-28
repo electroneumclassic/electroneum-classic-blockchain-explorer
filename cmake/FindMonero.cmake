@@ -2,8 +2,8 @@
 # CMake helper for the majority of the cpp-ethereum modules.
 #
 # This module defines
-#     Electroneum_XXX_LIBRARIES, the libraries needed to use ethereum.
-#     Electroneum_FOUND, If false, do not try to use ethereum.
+#     Monero_XXX_LIBRARIES, the libraries needed to use ethereum.
+#     Monero_FOUND, If false, do not try to use ethereum.
 #
 # File addetped from cpp-ethereum
 #
@@ -28,11 +28,11 @@
 # (c) 2014-2016 cpp-ethereum contributors.
 #------------------------------------------------------------------------------
 
-set(LIBS common;blocks;cryptonote_basic;cryptonote_core;
-		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;
-		blockchain_db;ringct;wallet;cncrypto)
+set(LIBS common;blocks;cryptonote_basic;cryptonote_core;multisig;
+		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;device;
+		blockchain_db;ringct;wallet;cncrypto;easylogging;version;checkpoints)
 
-set(Etn_INCLUDE_DIRS "${CPP_ELECTRONEUM_DIR}")
+set(Xmr_INCLUDE_DIRS "${CPP_MONERO_DIR}")
 
 # if the project is a subset of main cpp-ethereum project
 # use same pattern for variables as Boost uses
@@ -41,35 +41,37 @@ foreach (l ${LIBS})
 
 	string(TOUPPER ${l} L)
 
-	find_library(Etn_${L}_LIBRARY
+	find_library(Xmr_${L}_LIBRARY
 		NAMES ${l}
 		PATHS ${CMAKE_LIBRARY_PATH}
-		PATH_SUFFIXES "/src/${l}" "/external/db_drivers/lib${l}" "/lib" "/src/crypto" "/contrib/epee/src"
+		PATH_SUFFIXES "/src/${l}" "/src/" "/external/db_drivers/lib${l}" "/lib" "/src/crypto" "/contrib/epee/src" "/external/easylogging++/"
 		NO_DEFAULT_PATH
 	)
 
-	set(Etn_${L}_LIBRARIES ${Etn_${L}_LIBRARY})
+	set(Xmr_${L}_LIBRARIES ${Xmr_${L}_LIBRARY})
 
-	message(STATUS FindElectroneum " Etn_${L}_LIBRARIES ${Etn_${L}_LIBRARY}")
+	message(STATUS FindMonero " Xmr_${L}_LIBRARIES ${Xmr_${L}_LIBRARY}")
 
 	add_library(${l} STATIC IMPORTED)
-	set_property(TARGET ${l} PROPERTY IMPORTED_LOCATION ${Etn_${L}_LIBRARIES})
+	set_property(TARGET ${l} PROPERTY IMPORTED_LOCATION ${Xmr_${L}_LIBRARIES})
 
 endforeach()
 
-if (EXISTS ${ELECTRONEUM_BUILD_DIR}/external/easylogging++/libeasylogging.a)
-	add_library(easylogging STATIC IMPORTED)
-	set_property(TARGET easylogging
-			PROPERTY IMPORTED_LOCATION ${ELECTRONEUM_BUILD_DIR}/external/easylogging++/libeasylogging.a)
+if (EXISTS ${MONERO_BUILD_DIR}/src/ringct/libringct_basic.a)
+	message(STATUS FindMonero " found libringct_basic.a")
+	add_library(ringct_basic STATIC IMPORTED)
+	set_property(TARGET ringct_basic
+			PROPERTY IMPORTED_LOCATION ${MONERO_BUILD_DIR}/src/ringct/libringct_basic.a)
 endif()
 
-message(STATUS ${ELECTRONEUM_SOURCE_DIR}/build)
 
-# include electroneum headers
+message(STATUS ${MONERO_SOURCE_DIR}/build)
+
+# include monero headers
 include_directories(
-		${ELECTRONEUM_SOURCE_DIR}/src
-		${ELECTRONEUM_SOURCE_DIR}/external
-		${ELECTRONEUM_SOURCE_DIR}/build
-		${ELECTRONEUM_SOURCE_DIR}/external/easylogging++
-		${ELECTRONEUM_SOURCE_DIR}/contrib/epee/include
-		${ELECTRONEUM_SOURCE_DIR}/external/db_drivers/liblmdb)
+		${MONERO_SOURCE_DIR}/src
+		${MONERO_SOURCE_DIR}/external
+		${MONERO_SOURCE_DIR}/build
+		${MONERO_SOURCE_DIR}/external/easylogging++
+		${MONERO_SOURCE_DIR}/contrib/epee/include
+		${MONERO_SOURCE_DIR}/external/db_drivers/liblmdb)

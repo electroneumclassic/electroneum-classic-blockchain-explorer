@@ -14,7 +14,8 @@
             <H5 style="margin:5px">Payment id (encrypted): {{payment_id8}}</H5>
         {{/decrypted_payment_id8}}
         {{#decrypted_payment_id8}}
-            <H5 style="margin:5px">Payment id (decrypted): {{decrypted_payment_id8}}</H5>
+            <H5 style="margin:5px">Payment id (decrypted): {{decrypted_payment_id8}}
+                (value incorrect if you are not the recipient of the tx)</H5>
         {{/decrypted_payment_id8}}
     {{/has_payment_id8}}
 
@@ -32,12 +33,12 @@
 
     {{^tx_prove}}
         <h3>Checking which outputs belong to the given address and viewkey</h3>
-        <h5>address: {{etn_address}}</h5>
+        <h5>address: {{xmr_address}}</h5>
         <h5>viewkey: {{viewkey}}</h5>
     {{/tx_prove}}
     {{#tx_prove}}
         <h3>Prove that you send this tx to the given address</h3>
-        <h5>address: {{etn_address}}</h5>
+        <h5>address: {{xmr_address}}</h5>
         <h5>Tx private key: {{viewkey}}</h5>
     {{/tx_prove}}
 
@@ -68,9 +69,9 @@
         </table>
 
         <h3>
-            Sum ETN from matched outputs (i.e., incoming ETN):
+            Sum XMR from matched outputs (i.e., incoming XMR):
             {{#found_our_outputs}}
-                {{sum_etn}}
+                {{sum_xmr}}
             {{/found_our_outputs}}
             {{^found_our_outputs}}
                 0.000000000000
@@ -141,7 +142,7 @@
 
         </div>
         <h3>
-            Sum ETN from matched and marked by * ring member's outputs: {{sum_mixin_etn}}
+            Sum XMR from matched and marked by * ring member's outputs: {{sum_mixin_xmr}}
             <br/>
             <span style="font-size: 16px"> Possible spending is:
                 {{possible_spending}} (tx fee included)
@@ -151,6 +152,12 @@
                 it is impossible to know whether this is your real spending. <br/>
                 So do not take this number seriously.
                 It is probably totally wrong anyway.</span>
+               <br/>
+               <span style="font-size: 14px">
+                 Number of possible our mixins is {{no_all_possible_mixins}}
+                      for {{all_possible_mixins_amount}} xmr
+                      (amount as uint64).
+               </span>
         </h3>
     </div>
 
